@@ -1,8 +1,5 @@
 from fastapi import FastAPI
-import tweepy
-import os
 from services import user_service, search_service
-from app.config import BEARER_TOKEN
 
 app = FastAPI()
 
