@@ -1,4 +1,4 @@
-from app.config import BEARER_TOKEN
+from app import BEARER_TOKEN
 import tweepy
 
 # Authenticate with Tweepy

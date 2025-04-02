@@ -1,5 +1,5 @@
 import tweepy
-from app.config import BEARER_TOKEN
+from app import BEARER_TOKEN
 
 # Authenticate with Tweepy
 client = tweepy.Client(bearer_token=BEARER_TOKEN)
