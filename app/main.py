@@ -1,5 +1,6 @@
 from fastapi import FastAPI
-from services import user_service, search_service
+from app.services import search_service, user_service
+import uvicorn
 
 app = FastAPI()
 
@@ -14,3 +15,6 @@ def search_tweets(query: str, max_results:int = 10):
 @app.get("/user/{username}")
 def fetch_user(username: str):
     return user_service.get_user_by_username(username)
+
+if __name__ == "__main__":
+    uvicorn.run("main:app", host="127.0.0.1", port=8000, reload=True)

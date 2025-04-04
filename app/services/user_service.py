@@ -1,4 +1,6 @@
-from app import BEARER_TOKEN
+import json
+
+from app.config import BEARER_TOKEN
 import tweepy
 
 # Authenticate with Tweepy
@@ -18,7 +20,7 @@ client = tweepy.Client(bearer_token=BEARER_TOKEN)
 
 def get_user_by_username(username: str):
     try:
-        user = client.get_user(screen_name=username)
+        user = client.get_user(username=username)
         # user_data = {
         #     "username": user.screen_name,
         #     "name": user.name,
@@ -26,6 +28,6 @@ def get_user_by_username(username: str):
         #     "followers_count": user.followers_count,
         #     "profile_image_url": user.profile_image_url_https
         # }
-        return user.json()
-    except tweepy.TweepError as e:
+        return user.data.__dict__
+    except Exception as e:
         return {"error": f"Failed to fetch user: {str(e)}"}
