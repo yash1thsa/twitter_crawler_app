@@ -2,32 +2,26 @@ import json
 
 from app.config import BEARER_TOKEN
 import tweepy
+import json
 
 # Authenticate with Tweepy
 client = tweepy.Client(bearer_token=BEARER_TOKEN)
 
-# def get_user_by_username(username: str):
-#     url = (f"https://api.twitter.com/2/users/by/username/{username}?user.fields=profile_image_url,"
-#            f"location,public_metrics")
-#     headers = {"Authorization": f"Bearer {BEARER_TOKEN}"}
-#     response = requests.get(url, headers=headers)
-#
-#     if response.status_code == 200:
-#         return response.json()
-#     else:
-#         return {"error": response.json()}
-
+def to_dict_safe(obj):
+    return {
+        key: getattr(obj, key)
+        for key in dir(obj)
+        if not key.startswith("_") and not callable(getattr(obj, key))
+    }
 
 def get_user_by_username(username: str):
     try:
-        user = client.get_user(username=username)
-        # user_data = {
-        #     "username": user.screen_name,
-        #     "name": user.name,
-        #     "location": user.location,
-        #     "followers_count": user.followers_count,
-        #     "profile_image_url": user.profile_image_url_https
-        # }
-        return user.data.__dict__
+        response = client.get_user(username=username,  user_fields=[
+        "created_at", "description", "entities", "id", "location", "name",
+        "pinned_tweet_id", "profile_image_url", "protected", "public_metrics",
+        "url", "username", "verified", "withheld"
+    ])
+        user = response.data
+        return json.dumps(to_dict_safe(user), indent=2, default=str)
     except Exception as e:
         return {"error": f"Failed to fetch user: {str(e)}"}
