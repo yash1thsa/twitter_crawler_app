@@ -1,11 +1,5 @@
 import json
 
-from app.config import BEARER_TOKEN
-import tweepy
-import json
-
-# Authenticate with Tweepy
-client = tweepy.Client(bearer_token=BEARER_TOKEN)
 
 def to_dict_safe(obj):
     return {
@@ -14,7 +8,7 @@ def to_dict_safe(obj):
         if not key.startswith("_") and not callable(getattr(obj, key))
     }
 
-def get_user_by_username(username: str):
+def get_user_by_username(username: str, client):
     try:
         response = client.get_user(username=username,  user_fields=[
         "created_at", "description", "entities", "id", "location", "name",
